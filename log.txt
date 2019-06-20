@@ -1,0 +1,92 @@
+
+A-PHOT log file
+
+v2.1.5
+Added option to force the computation of Kron radius giving a,e,theta as input.
+
+v2.1.4
+Added __future__ import for print functions.
+
+v2.1.3
+Dec 6 2018 - E. Merlin
+Fixed a bug in blending/contamination flagging algorithm, and a bug in the computation of the position angle.
+
+v2.1.2
+Nov 27 2018 - E. Merlin
+Included useless option to directly output catalog in microJy (for lazy astronomers).
+
+v2.1.1
+Nov 20 2018 - E. Merlin
+Options for WCS input included.
+Flagging revised and completed; option for pixel substitution now generates copies of the arrays so that flagging is performed on the original images.
+
+v2.1.0
+Nov 8 2018 - E. Merlin
+Added flagging of objects à la SExtractor. Also, because of that RMS_tol is now an input parameter.
+
+v2.0.3
+Sep 18 2018 - E. Merlin
+Added option for substitution of bad/contamiated pixels with values of the ones symmetric wrt the center of the object.
+
+v2.0.2
+Aug 2 2018 - E. Merlin
+Corrected a bug on the computations of errors for circular apertures in "best S/N" mode.
+
+v2.0.1
+May 24 2018 - E. Merlin
+Added optional clipping of n*sigma pixels in flux summation.
+Magnitude catalogue made optional.
+
+v2.0
+Feb 21 2018 - E. Merlin
+Added optional use of flag map. Corrected ambiguous variable fac_sigma in moments.c.
+
+v1.2.8
+Feb 14 2018 - E. Merlin
+Added (optional) magnitude output catalogue.
+
+v1.2.7
+Jan 16 2018 - E. Merlin
+Added mu_max in output. Revised morpho file naming. 
+
+v1.2.6
+Mar 16 2017 - E. Merlin
+Revised methods to compute background (loop with morphological parameters
+computation, and median/mode method as in SExtractor). Also, minor changes in
+morpho parameters methods.
+
+v1.2.5
+Jan 27 2017 - E. Merlin
+New modules to compute morphological parameters (semi-axis, ellipticity,
+position angle, Kron radius) and revised Py script to obtain input catalog
+from SExtractor catalogue (with options to read in morpho parameters or
+to switch to internal computation)
+
+v1.2.4
+Nov 21 2016 - E. Merlin
+Revised background module, using RMS map (and after testing)
+
+v1.2.3
+Aug 1 2016 - E. Merlin
+Added background subtraction module
+
+v1.2.2
+Jul 8 2016 - E. Merlin
+Corrected bug in determination of best SN aperture (sqrt of uncertainty)
+
+v1.2.1
+Jun 29 2016 - E. Merlin
+Corrected bug in determination of pixel positions
+
+v 1.2
+Jun 17 2016 - E. Merlin
+Added option to find best SN elliptical aperture with bisection method
+
+v 1.1
+Jun 14 2016 - E. Merlin
+Added Python envelop, and file with elliptical multiplicative factors for
+Kron radii
+
+v 1.0
+Jun 1 2016 - E. Merlin
+The basic code
