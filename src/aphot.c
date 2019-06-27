@@ -88,10 +88,12 @@ int main(int argc, char *argv[])
   double PA, cosPA, sinPA;
   int naper, keep_pix, naperk, ni, nj;
   double *aper, *aperk, facarea;
-  double R, R2, Rmax, RRR, fmax, *f, *errf, *fell, *errfell, fbkgd, mumax;
+  double R, R2, Rmax, RRR, fmax;
+  double *f, *errf, *fell, *errfell, fseg, errfseg;
+  double fbkgd, mumax;
   char *logbasename, *logbasenamemorph; 
   char logname[BUFFERSIZE];
-  int binsubpix, ap, apk, useseg, useflag, doclip;
+  int binsubpix, ap, apk, useseg, useflag, doclip, areaseg;
   float num, GAIN;
   float fac_rbkgd, fac_sigma, fac_sigma2, fmin_kron, fmax_kron;
   float v_aper=1000.0;
@@ -306,7 +308,7 @@ int main(int argc, char *argv[])
 	    logname);
     return(RETURN_FAILURE);
   }  
-  fprintf(olog, "#id x y ");
+  fprintf(olog, "#id x y area_seg f_seg ");
   for (ap=0;ap<naper;ap++)
     {
       fprintf(olog, "ApC%d ",ap+1);
@@ -325,7 +327,8 @@ int main(int argc, char *argv[])
 	  fprintf(olog, "ApEll%d ",apk+1);
 	}
     }
-  
+
+  fprintf(olog, "errf_seg ");
   for (ap=0;ap<naper;ap++)
     {
       fprintf(olog, "err_ApC%d ",ap+1);
@@ -355,7 +358,7 @@ int main(int argc, char *argv[])
     printf("Computing magnitudes using ZP=%f and pixelscale=%f\n",ZP,pixsc);
     snprintf(logname,BUFFERSIZE,"%s_mag",logbasename);
     llog = fopen(logname, "w");
-    fprintf(llog,"#id x y ");
+    fprintf(llog,"#id x y area_seg mag_seg ");
     for (ap=0;ap<naper;ap++)
       {
 	fprintf(llog, "ApC%d ",ap+1);
@@ -364,6 +367,7 @@ int main(int argc, char *argv[])
       {
 	fprintf(llog, "ApEll%d ",apk+1);
       }
+    fprintf(llog,"errmag_seg ");
     for (ap=0;ap<naper;ap++)
       {
 	fprintf(llog, "err_ApC%d ",ap+1);
@@ -665,6 +669,9 @@ int main(int argc, char *argv[])
       bad_pix=0.0;
       contamin_pix=0.0;
       aper_area=3.14*a*b;
+      fseg=0.0;
+      errfseg=0.0;
+      areaseg=0;
       
       do { // Loop for best S/N bisection (will enter only once if not needed)
 
@@ -689,7 +696,7 @@ int main(int argc, char *argv[])
 		  
 		  if (fabs(pixels_orig[j*Lx+i])>TOL && pixels_rms[j*Lx+i]<RMSTOL && pixels_flag[j*Lx+i]==0)
 		    {
-		      		      
+		      
 		      // "a"=farthest point; "b"=closest point
 		      if (y>(float)yc) // Upper region
 			{
@@ -735,6 +742,13 @@ int main(int argc, char *argv[])
 		      if (find_best_sn==0 || find_best_sn==max_iter_sn) { // This is for circular apertures, so: only enter once, i.e. if no loop for bestSN is needed or if it's the 1st time here
 			
 			keep_pix=1;
+
+			if (pixels_seg_orig[j*Lx+i]==id)
+			  {
+			    fseg+=(pixels[j*Lx+i]-fbkgd);
+			    errfseg+=pixels_rms[j*Lx+i]*pixels_rms[j*Lx+i];
+			    areaseg+=1;
+			  }			
 			
 			for(ap=naper-1;ap>-1;ap--) // Loop on circular apertures, starting from larger
 			  {
@@ -962,12 +976,20 @@ int main(int argc, char *argv[])
 	    errf[ap]=sqrt(errf[ap]); 
 	  }
 	}
+
+      // Finalize seg errors
+      if (GAIN>0.0){
+	errfseg=sqrt(errfseg+MAX(0.0,fseg)/GAIN);
+      }
+      else{
+	errfseg=sqrt(errfseg); 
+      }      
       
       // Write output for this object
-      fprintf(olog, "%d %f %f ",id, x0+1.0, y0+1.0);
+      fprintf(olog, "%d %f %f %d %f ",id, x0+1.0, y0+1.0, areaseg, mjyfac*fseg);
 #ifdef MAG_CAT
       if (ZP>0.0){
-	fprintf(llog,"%d %f %f ",id, x0+1.0, y0+1.0);
+	fprintf(llog,"%d %f %f %d %f",id, x0+1.0, y0+1.0, areaseg, -2.5*log10(fseg)+ZP);
       }
 #endif      
       for (ap=0;ap<naper;ap++)
@@ -1003,6 +1025,10 @@ int main(int argc, char *argv[])
 	    }
 	}
 
+      fprintf(olog,"%f ",mjyfac*errfseg);
+#ifdef MAG_CAT
+      fprintf(llog,"%f ",1.0857*errfseg/fseg);
+#endif      
       for (ap=0;ap<naper;ap++)
 	{
 	  fprintf(olog,"%f ",mjyfac*errf[ap]);
