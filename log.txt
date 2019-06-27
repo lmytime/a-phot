@@ -1,6 +1,9 @@
 
 A-PHOT log file
 
+v2.1.6
+Added segmentation fluxes and areas.
+
 v2.1.5
 Added option to force the computation of Kron radius giving a,e,theta as input.
 
