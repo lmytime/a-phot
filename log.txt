@@ -1,13 +1,20 @@
 
 A-PHOT log file
 
+v2.1.7
+Sep 25 2019 - E. Merlin
+Corrected minor bug in output options.
+
 v2.1.6
+Jun 27 2019 - E. Merlin
 Added segmentation fluxes and areas.
 
 v2.1.5
+Mar 20 2019 - E. Merlin
 Added option to force the computation of Kron radius giving a,e,theta as input.
 
 v2.1.4
+Feb 5 2019 - E. Merlin
 Added __future__ import for print functions.
 
 v2.1.3

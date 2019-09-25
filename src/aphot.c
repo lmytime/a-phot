@@ -473,7 +473,6 @@ int main(int argc, char *argv[])
 
 	  // Estimate background (or do clipping)
 	  if (bkgd+doclip>0) fbkgd=background(pixels, pixels_rms, pixels_seg, pixels_flag, Lx, Ly, fac_rbkgd*a, x0, y0, xmin, ymin, clipmax, rbuf, id, fac_sigma, fac_sigma2, doclip, bkgd);
-	
 
 	  if (force_kron_comput==1)
 	    {
@@ -588,7 +587,6 @@ int main(int argc, char *argv[])
       } 
       */
 
-      
       // Position angle stuff
       
       PA=(double)(pa*2.0e0*3.14159265358979323846/360.0e0); // deg to rad
@@ -976,7 +974,7 @@ int main(int argc, char *argv[])
 	    errf[ap]=sqrt(errf[ap]); 
 	  }
 	}
-
+      
       // Finalize seg errors
       if (GAIN>0.0){
 	errfseg=sqrt(errfseg+MAX(0.0,fseg)/GAIN);
@@ -984,9 +982,9 @@ int main(int argc, char *argv[])
       else{
 	errfseg=sqrt(errfseg); 
       }      
-      
       // Write output for this object
       fprintf(olog, "%d %f %f %d %f ",id, x0+1.0, y0+1.0, areaseg, mjyfac*fseg);
+       
 #ifdef MAG_CAT
       if (ZP>0.0){
 	fprintf(llog,"%d %f %f %d %f",id, x0+1.0, y0+1.0, areaseg, -2.5*log10(fseg)+ZP);
@@ -1024,11 +1022,15 @@ int main(int argc, char *argv[])
 #endif	      
 	    }
 	}
-
+      
       fprintf(olog,"%f ",mjyfac*errfseg);
+      
 #ifdef MAG_CAT
-      fprintf(llog,"%f ",1.0857*errfseg/fseg);
-#endif      
+      if (ZP>0.0){ 
+	fprintf(llog,"%f ",1.0857*errfseg/fseg);
+      }
+#endif
+      
       for (ap=0;ap<naper;ap++)
 	{
 	  fprintf(olog,"%f ",mjyfac*errf[ap]);
@@ -1038,7 +1040,7 @@ int main(int argc, char *argv[])
 	  }
 #endif	  
 	}
-
+      
       if (find_best_sn<0)
 	{
 	  fprintf(olog,"%f ",mjyfac*errfell[2]);
@@ -1061,7 +1063,6 @@ int main(int argc, char *argv[])
 #endif	    
 	  }
 	}
-
 
       fprintf(olog,"%f ",mjyfac*(mumax-fbkgd));
 #ifdef MAG_CAT
