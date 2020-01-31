@@ -987,7 +987,7 @@ int main(int argc, char *argv[])
        
 #ifdef MAG_CAT
       if (ZP>0.0){
-	fprintf(llog,"%d %f %f %d %f",id, x0+1.0, y0+1.0, areaseg, -2.5*log10(fseg)+ZP);
+	fprintf(llog,"%d %f %f %d %f ",id, x0+1.0, y0+1.0, areaseg, -2.5*log10(fseg)+ZP);
       }
 #endif      
       for (ap=0;ap<naper;ap++)
