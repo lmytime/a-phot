@@ -467,20 +467,44 @@ int main(int argc, char *argv[])
 	  rrr=MAX(rrr,(int)ceil(fmax*a)); // this for elliptical apertures
 	  rrr=MAX(rrr,(int)ceil(fac_rbkgd*a+rbuf)); // this is for background
 	  // that's it - no need to compute parameters internally so r_segm does not matter
-	  
-	  readpixels(xc,yc,rrr+1,useseg,useflag);
-	  if (symreplace>0) replace_sym(xc-xmin,yc-ymin,id,Lx,Ly,RMSTOL);
 
-	  // Estimate background (or do clipping)
-	  if (bkgd+doclip>0) fbkgd=background(pixels, pixels_rms, pixels_seg, pixels_flag, Lx, Ly, fac_rbkgd*a, x0, y0, xmin, ymin, clipmax, rbuf, id, fac_sigma, fac_sigma2, doclip, bkgd);
-
-	  if (force_kron_comput==1)
+	  int read_pix=1;
+	  while (read_pix>0)
 	    {
-	      // read in parameters of the ellipse but recompute Kron radius
-	      R1=fac_kron*kron(Lx,Ly,xmin,ymin,x0,y0,a,b,aper[naper-1],pixels,pixels_seg,pixels_flag,fbkgd,id,fmin_kron,fmax_kron);
-	      fprintf(mlog,"%d %f %f %f %f\n",id,a,e,theta,R1);
-	      a=R1;
-	      b=a*(1.0-e);
+	      readpixels(xc,yc,rrr+1,useseg,useflag);
+	      if (symreplace>0) replace_sym(xc-xmin,yc-ymin,id,Lx,Ly,RMSTOL);
+
+	      // Estimate background (or do clipping)
+	      if (bkgd+doclip>0) fbkgd=background(pixels, pixels_rms, pixels_seg, pixels_flag, Lx, Ly, fac_rbkgd*a, x0, y0, xmin, ymin, clipmax, rbuf, id, fac_sigma, fac_sigma2, doclip, bkgd);
+
+	      if (force_kron_comput==1)
+		{
+		  // read in parameters of the ellipse but recompute Kron radius
+		  R1=fac_kron*kron(Lx,Ly,xmin,ymin,x0,y0,a,b,aper[naper-1],pixels,pixels_seg,pixels_flag,fbkgd,id,fmin_kron,fmax_kron);
+#ifdef VERBOSE
+		  fprintf(mlog,"%d %f %f %f %f\n",id,a,e,theta,R1);
+#endif
+		  if ((int)ceil(MAX(fmax*R1,fac_rbkgd*R1+rbuf))>rrr) // the computed R1 is larger than the region: re-read in pixel values
+		    {
+#ifdef VERBOSE
+		      printf("Enlarging and reading again pixels values: r= %d -> %d\n",rrr,(int)ceil(MAX(fmax*R1,R1+rbuf)));
+#endif
+		      rrr=(int)ceil(MAX(fmax*R1,fac_rbkgd*R1+rbuf));
+		      read_pix=1;
+		      freepixels();
+		    }
+		  else
+		    {
+		      a=R1;
+		      b=a*(1.0-e);
+		      read_pix=0;
+		    }
+
+		}
+	      else
+		{
+		  read_pix=0;
+		}
 	    }
 	  
 	}

@@ -1,6 +1,14 @@
 
 A-PHOT log file
 
+v2.1.9
+Jun 9 2020 - E. Merlin
+Added loop to expand pixels array reading when forcing Kron radius computation.
+
+v2.1.8
+May 29 2020 - E. Merlin
+Corrected bug in replacepixels.c, to assign the replacement case.
+
 v2.1.7
 Sep 25 2019 - E. Merlin
 Corrected minor bug in output options.

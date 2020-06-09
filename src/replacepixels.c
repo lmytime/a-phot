@@ -48,7 +48,7 @@ void replace_sym(int xxx, int yyy, int id, int Lx, int Ly, double RMSTOL)
 	    yn=(2*yyy-j);
 
 	    //Check if it's outside the box
-	    if ((xn>=Lx && yn>=Ly) || (xn<0 && yn<0))
+	    if ((xn>=Lx && yn>=Ly) || (xn<0 && yn<0) || (xn>=Lx && yn<0) || (xn<0 && yn>=Ly))
 	      {
 		idx=j*Lx+i; // no symmetry possible, it will be flagged
 		fff=0.0;
