@@ -5,7 +5,7 @@ from subprocess import call
 import sys,os,glob
 
 ### EDIT HERE, INSERTING THE PATH TO CFITSIO INSTALLATION FOLDER
-cf="/your/path/to/cfitsio/"
+cf="/Users/mingyu/opt/cfitsio-4.1.0/"
 ###
 
 lcf=cf+"lib"
@@ -15,7 +15,7 @@ nam="aphot_core"
 cmd="chmod +x aphot.py"
 stat=call(cmd,shell=True)
 if stat:
-    print "Could not chmod aphot.py"
+    print("Could not chmod aphot.py")
     sys.exit()
 
 srcs=""
@@ -27,17 +27,17 @@ cmd=" ".join(["gcc -o", nam, srcs, "-L", lcf,"-lcfitsio -lm -I", icf, "-I ./incl
 stat=call(cmd,shell=True)
 
 if stat:
-    print "Compilation aborted"
+    print("Compilation aborted")
     sys.exit()
 else:
-    print "A-PHOT compiled"
+    print("A-PHOT compiled")
 
-if not os.path.isdir('bin'): 
+if not os.path.isdir('bin'):
     os.mkdir('bin')
 cmd="cd bin ; mv ../aphot_core . ; ln -s -f ../aphot.py ./aphot ; cd .."
 stat=call(cmd,shell=True)
 if stat:
-    print "Could not write executable in bin folder"
+    print("Could not write executable in bin folder")
     sys.exit()
 else:
-    print "A-PHOT installed, have fun"
+    print("A-PHOT installed, have fun")

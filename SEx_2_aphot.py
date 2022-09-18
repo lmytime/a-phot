@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
+
 from astropy. io import ascii
 from subprocess import call
 import sys,os
@@ -16,7 +16,7 @@ print (" -s <SM> : difference FWHM LRI-HRI, in pixels (will smooth lengths and r
 try:
     cat=sys.argv[1]
 except:
-    cat=raw_input("Input SEx catalog: ")
+    cat=input("Input SEx catalog: ")
     if not cat:
         print ("Meh. Exiting")
         sys.exit()

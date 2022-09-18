@@ -1,6 +1,10 @@
 
 A-PHOT log file
 
+v2.1.99
+Sep 18 2022 - M. Li
+Update to python3 version.
+
 v2.1.9
 Jun 9 2020 - E. Merlin
 Added loop to expand pixels array reading when forcing Kron radius computation.

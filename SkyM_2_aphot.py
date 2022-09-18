@@ -5,22 +5,22 @@ import sys,os
 
 
 if stat:
-    print "Compilation aborted"
+    print("Compilation aborted")
     sys.exit()
 else:
-    print "Compilation done"
+    print("Compilation done")
 
-cat=raw_input("Input SkyMaker list: ")
+cat=input("Input SkyMaker list: ")
 if not cat:
     sys.exit()
 if not os.path.exists(cat):
-    print cat,"does not exist, bye"
+    print(cat,"does not exist, bye")
     sys.exit
 c=ascii.read(cat)
 o=open(cat+'_aphot','w')
 
 ps=0.1
-print "Pixel scale: ",ps
+print("Pixel scale: ",ps)
 ido=0
 for obj in c:
     ido+=1
@@ -35,5 +35,5 @@ for obj in c:
     o.write("%d %f %f %f %f %f\n"%(ido,obj['col2'],obj['col3'],r,1.0-ell,pa))
 o.close()
 
-print "All done"
+print("All done")
 

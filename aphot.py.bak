@@ -42,7 +42,7 @@ def wcs2pix(cat,img):
         if (abs(psi1-psi2)/(psi1+1.e-8))<1.e-4:
             psi=psi1
         else:
-            print("Sorry, can't properly compute the rotation angle. Aborting")
+            print "Sorry, can't properly compute the rotation angle. Aborting"
             sys.exit()
         psi*=57.2958
         
@@ -80,8 +80,8 @@ def readparam(configfile,paramdict={},preservecase=False):
             try:
                 keyword,vals=ll.split(None,1)
             except:
-                print("Error in paramfile (bad entry):",ll)
-                print("Aborting")
+                print "Error in paramfile (bad entry):",ll
+                print "Aborting"
                 sys.exit()
             if not preservecase:
                 keyword=keyword.lower()
@@ -124,7 +124,7 @@ def run(parfile,args):
     """
     Calls C core code
     """
-    print("Start: ",time.time(),time.clock())
+    print "Start: ",time.time(),time.clock()
     
     d=readparam(parfile,{}) 
 
@@ -135,11 +135,11 @@ def run(parfile,args):
                 kw=arg.strip('-')
                 kw=kw.strip("'")
                 kw=kw.strip('"')
-                print("> Keyword",kw,"has now value",args[n+1])
+                print "> Keyword",kw,"has now value",args[n+1]
                 kw=kw.lower()
                 d[kw]=args[n+1]
             except:
-                print("Error in parsing command line arguments")
+                print "Error in parsing command line arguments"
                 sys.exit()
         n+=1
 
@@ -150,9 +150,9 @@ def run(parfile,args):
         try:
             fac_wcs_conv,incat=wcs2pix(d['input_cat'],d['image'])
         except:
-            print("TERROR: Problems in converting from WCS to pixel space.")
-            print("Perhaps some header keyword is missing.")
-            print("Better to build the input catalogue in pixel space separately. Aborting")
+            print "TERROR: Problems in converting from WCS to pixel space."
+            print "Perhaps some header keyword is missing."
+            print "Better to build the input catalogue in pixel space separately. Aborting"
             sys.exit()
             
         try:    
@@ -203,16 +203,16 @@ def run(parfile,args):
                   str(d['fac_sigma']),str(d['fac_sigma2']),str(d['rbuf']),
                   str(d['fac_rbkgd']),str(d['zp']),str(d['pixscale']),
                   d['flag_image'],str(rpix),str(d['rms_tol']),str(mJy),str(force_kron_comput)])
-    print(cmd)
+    print cmd
     stat=call(cmd,shell=True)
     if stat != 0:
-        print("A-PHOT failed, stat=",stat)
+        print "A-PHOT failed, stat=",stat
         sys.exit()
 
     os.remove('ap_circ.lst')
     os.remove('ap_ell.lst')
 
-    print("End: ",time.time())
+    print "End: ",time.time()
 
 #-----------------------------------------------#
 
@@ -259,45 +259,45 @@ def pf():
 #----------------------------------------------#
 
 if __name__ == '__main__':
-    print(" ")
-    print("*********** A-PHOT ************")
-    print("**          v. 1.2           **")
-    print("*******************************")
+    print " "
+    print "*********** A-PHOT ************"
+    print "**          v. 1.2           **"
+    print "*******************************"
 
     if np.size(sys.argv)==1:
-        print("Usage: aphot [paramfile] [options]")
+        print "Usage: aphot [paramfile] [options]"
         if os.path.exists('aphot.conf'):
             parfile='aphot.conf'
         else:
-            print("No parameter file found. Aborting")
+            print "No parameter file found. Aborting"
             sys.exit()          
 
     elif np.size(sys.argv)==2:
 
         parfile=sys.argv[1] # reads name of parameterfile
         if (parfile=="-h" or parfile=="h" or parfile=="H" or parfile=="-H" or ("help" in parfile)):
-            print("Usage: aphot [paramfile] [options]")
-            print(" >> Options: to input a keyword add '-<keyword> <value>'")
-            print(" >> E.g.: aphot param.file -image img.fits -c_aper 1.5,6.0") 
+            print "Usage: aphot [paramfile] [options]"
+            print " >> Options: to input a keyword add '-<keyword> <value>'"
+            print " >> E.g.: aphot param.file -image img.fits -c_aper 1.5,6.0" 
             sys.exit()
         if (parfile=="-p"):
-            print("Usage: aphot [paramfile] [options]")
-            print("Print parameter file")
+            print "Usage: aphot [paramfile] [options]"
+            print "Print parameter file"
             pf()
             sys.exit()
         if not os.path.exists(parfile):
-            print("Usage: aphot [paramfile] [options]")
-            print("No parameter file "+parfile+" found. Aborting")
+            print "Usage: aphot [paramfile] [options]"
+            print "No parameter file "+parfile+" found. Aborting"
             sys.exit()     
 
     elif np.size(sys.argv)>=3:
         parfile=sys.argv[1]
         if not os.path.exists(parfile):
-            print("Usage: aphot [-i] [paramfile] [options]")
-            print("No parameter file "+parfile+" found. Aborting")
+            print "Usage: aphot [-i] [paramfile] [options]"
+            print "No parameter file "+parfile+" found. Aborting"
             sys.exit()          
 
-    print("Parameter file:",parfile)
+    print "Parameter file:",parfile
     run(parfile,sys.argv)
 
 
