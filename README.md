@@ -1,5 +1,7 @@
 A-PHOT public version as developed by E. Merlin in 2015/2016 (plus later corrections).
 
+Please check http://www.astrodeep.eu/a-phot/ for more about this software.
+
 Python 3 version.
 
 ## Install
@@ -9,3 +11,5 @@ Python 3 version.
 2. run `python install.py`.
 
 3. add bin directory to you PATH.
+
+## Test

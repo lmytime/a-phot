@@ -45,22 +45,22 @@ def wcs2pix(cat,img):
             print("Sorry, can't properly compute the rotation angle. Aborting")
             sys.exit()
         psi*=57.2958
-        
+
     c=ascii.read(cat)
-                            
+
     for obj in c:
 
         ra,dec=obj[obj.colnames[1]],obj[obj.colnames[2]]
         x,y=w.wcs_world2pix(ra,dec, 1)
-        a=fac_wcs_conv*obj[obj.colnames[3]]        
+        a=fac_wcs_conv*obj[obj.colnames[3]]
         theta=obj[obj.colnames[5]]
         if (theta<500.0):
             theta=theta-psi
-        
+
         o.write("%d %f %f %f %f %f\n"%(obj[obj.colnames[0]],x,y,a,obj[obj.colnames[4]],theta))
 
     o.close()
-    
+
     return(fac_wcs_conv,nam)
 
 #---------------------------------------------------
@@ -124,9 +124,9 @@ def run(parfile,args):
     """
     Calls C core code
     """
-    print("Start: ",time.time(),time.clock())
-    
-    d=readparam(parfile,{}) 
+    print("Start: ",time.time(),time.perf_counter())
+
+    d=readparam(parfile,{})
 
     n=0
     for arg in args:
@@ -154,16 +154,16 @@ def run(parfile,args):
             print("Perhaps some header keyword is missing.")
             print("Better to build the input catalogue in pixel space separately. Aborting")
             sys.exit()
-            
-        try:    
+
+        try:
             while "," in d['aper_circ_list']:
                 d1,d['aper_circ_list']=d['aper_circ_list'].split(",",1)
                 apc.write("%f "%(fac_wcs_conv*float(d1)))
         except:
             pass
         d1=d['aper_circ_list']
-        apc.write("%f\n"%(fac_wcs_conv*float(d1)))            
-            
+        apc.write("%f\n"%(fac_wcs_conv*float(d1)))
+
     else:
         incat=d['input_cat']
         try:
@@ -175,7 +175,7 @@ def run(parfile,args):
         ape.write("%s\n"%(d['fac_ell_list'].replace(',',' ')))
     except:
         ape.write("%s\n"%(d['fac_ell_list']))
-      
+
     apc.close()        
     ape.close()
     
