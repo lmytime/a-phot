@@ -1,6 +1,6 @@
-A-PHOT public version as developed by E. Merlin in 2015/2016 (plus later corrections).
+A-PHOT public version as developed by E. Merlin in 2015/2016 (plus later corrections). https://gitlab.com/EMerlin/a-phot
 
-Please check http://www.astrodeep.eu/a-phot/ for more about this software. The public version is based on python2.
+Please check http://www.astrodeep.eu/a-phot/ for more about this software. This public version is based on python2.
 
 I update it to Python 3 version.
 

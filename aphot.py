@@ -176,9 +176,9 @@ def run(parfile,args):
     except:
         ape.write("%s\n"%(d['fac_ell_list']))
 
-    apc.close()        
+    apc.close()
     ape.close()
-    
+
     bkgdv=0
     if (d['bkgd']==True or d['bkgd']=='True'):
         bkgdv=1
@@ -190,11 +190,11 @@ def run(parfile,args):
         rpix=1
     mJy=0
     if (d['microjy']==True or d['microjy']=='True'):
-        mJy=1 
+        mJy=1
     force_kron_comput=0
     if (d['force_kron_comput']==True or d['force_kron_comput']=='True'):
         force_kron_comput=1
-        
+
     cmd=' '.join(['aphot_core',d['image'],d['rms_image'],
                   d['seg_image'],incat,'ap_circ.lst','ap_ell.lst',
                   str(d['binsubpix']),str(d['gain']),str(bkgdv),str(cl),
@@ -221,7 +221,7 @@ def pf():
     Prints template parameter file
     """
     pf=open('aphot.conf','w')
-    
+
     pf.write("\n")
     pf.write("image             image.fits       # measurement image\n")
     pf.write("rms_image         image.rms.fits   # rms map image\n")
@@ -239,7 +239,7 @@ def pf():
     pf.write("bkgd              False            # background subtraction [True/False]\n")
     pf.write("clip              False            # flag pixels above fac_sigma2 [True/False]\n")
     pf.write("replacepix        False            # replace bad/contaminated pixels\n")
-    pf.write("                                   #  with value of symmetric ones [True/False]\n")    
+    pf.write("                                   #  with value of symmetric ones [True/False]\n")
     pf.write("zp                0.0              # 0.0 to ignore\n")
     pf.write("pixscale          1.0              # arcsec; 1.0 to ignore\n")
     pf.write("force_kron_comput False          # compute only Kron radius from input morphology\n")
@@ -270,7 +270,7 @@ if __name__ == '__main__':
             parfile='aphot.conf'
         else:
             print("No parameter file found. Aborting")
-            sys.exit()          
+            sys.exit()
 
     elif np.size(sys.argv)==2:
 
@@ -288,21 +288,14 @@ if __name__ == '__main__':
         if not os.path.exists(parfile):
             print("Usage: aphot [paramfile] [options]")
             print("No parameter file "+parfile+" found. Aborting")
-            sys.exit()     
+            sys.exit()
 
     elif np.size(sys.argv)>=3:
         parfile=sys.argv[1]
         if not os.path.exists(parfile):
             print("Usage: aphot [-i] [paramfile] [options]")
             print("No parameter file "+parfile+" found. Aborting")
-            sys.exit()          
+            sys.exit()
 
     print("Parameter file:",parfile)
     run(parfile,sys.argv)
-
-
-        
-
-
-
-
